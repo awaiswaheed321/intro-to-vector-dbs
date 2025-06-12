@@ -7,8 +7,10 @@ from langchain_pinecone import PineconeVectorStore
 
 load_dotenv()
 
+
 def format_docs(docs):
     return "\n\n".join(doc.page_content for doc in docs)
+
 
 if __name__ == "__main__":
     print("Retrieving...")
@@ -38,7 +40,10 @@ if __name__ == "__main__":
     custom_rag_prompt = PromptTemplate.from_template(template=template)
 
     rag_chain = (
-        {"context" : vectorstore.as_retriever() | format_docs, "question" : RunnablePassthrough()}
+        {
+            "context": vectorstore.as_retriever() | format_docs,
+            "question": RunnablePassthrough(),
+        }
         | custom_rag_prompt
         | llm
     )
